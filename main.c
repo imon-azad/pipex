@@ -6,7 +6,7 @@
 /*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 05:34:02 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/05/15 04:55:33 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/05/15 05:12:13 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	get_env_path(int argc, char **argv, char **envp, t_pdata *data)
 
 	i = 0;
 	data->in_fd = open(argv[1], O_RDONLY);
-	if (data->in_fd == -1)
-		pipex_exit(data, 2);
+	/* if (data->in_fd == -1)
+		pipex_exit(data, 2); */
 	data->out_fd = open(argv[argc - 1], O_CREAT | O_RDWR | O_TRUNC, 0666);
-	if (access(argv[argc - 1], F_OK) == -1)
+	/* if (access(argv[argc - 1], F_OK) == -1)
 		pipex_exit(data, 2);
 	if (access(argv[argc - 1], W_OK) == -1)
-		pipex_exit(data, 3);
+		pipex_exit(data, 3); */
 	while (envp[i] && !ft_strnstr(envp[i], "PATH=", ft_strlen(envp[i])))
 		i++;
 	data->env_path = ft_split(envp[i] + 5, ':');

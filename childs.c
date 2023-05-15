@@ -6,7 +6,7 @@
 /*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 04:52:37 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/05/15 04:54:31 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/05/15 04:59:19 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	first_child(t_pdata data, char **argv, char **envp)
 	if (!cmd_args)
 		(pipex_exit(&data, 4));
 	cmd = get_cmd(&data, cmd_args[0]);
-	printf("cmd_:%s\n", cmd);
 	if (!cmd)
 		pipex_exit(&data, 7);
 	execve(cmd, cmd_args, envp);
