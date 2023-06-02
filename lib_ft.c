@@ -6,7 +6,7 @@
 /*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 00:05:30 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/05/15 04:09:13 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/06/02 03:02:33 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,13 @@ char	*ft_strjoin(char const *str1, char const *str2)
 	}
 	new_str[i] = 0;
 	return (new_str);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	while (*s != '\0')
+	{
+		write(fd, s, 1);
+		s++;
+	}
 }

@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "ratio": "c",
-        "pipex.h": "c"
+        "pipex.h": "c",
+        "system_error": "c"
     }
 }

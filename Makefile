@@ -6,9 +6,11 @@
 #    By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/15 04:44:20 by esamad-j          #+#    #+#              #
-#    Updated: 2023/05/15 04:54:55 by esamad-j         ###   ########.fr        #
+#    Updated: 2023/06/02 01:32:55 by esamad-j         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+#-g -fsanitize=address -g3
 
 NAME	= pipex
 
@@ -23,7 +25,7 @@ CC 			= gcc
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(FLAGS)  $(SRCS) -o $(NAME)
+	$(CC)   $(FLAGS)  $(SRCS) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)
