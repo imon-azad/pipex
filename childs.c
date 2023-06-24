@@ -6,13 +6,13 @@
 /*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 04:52:37 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/06/12 02:28:13 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/06/24 15:29:15 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 get_cmd(t_pdata *data, char *cmd)
+char	*get_cmd(t_pdata *data, char *cmd)
 {
 	char	*tmp;
 	char	*command;
@@ -26,7 +26,7 @@ char	*                                                                          
 			return (NULL);
 		command = ft_strjoin(tmp, cmd);
 		if (!command)
-			return (NULL);
+			return (free(tmp), NULL);
 		free(tmp);
 		if (access(command, 0) == 0)
 			return (command);
@@ -36,49 +36,70 @@ char	*                                                                          
 	return (NULL);
 }
 
-void	first_child(t_pdata data, char **argv, char **envp)
+void	ft_exe(char *cmd, char **envp, t_pdata data)
 {
 	char	**cmd_args;
-	char	*cmd;
+	char	*cmd_exe;
 
-	if (dup2(data.tube[1], STDOUT_FILENO) == -1)
-		//printf("hola");
-		pipex_exit(&data, 6, NULL);
-	close(data.tube[0]);
-	close(data.tube[1]);
-	if (dup2(data.in_fd, STDIN_FILENO) == -1 && data.in_fd != -1)
-		//printf("hola");
-		pipex_exit(&data, 6, NULL);
-	cmd_args = ft_split(argv[2], ' ');
-	if (!cmd_args)
-		(pipex_exit(&data, 4, NULL));
-	cmd = get_cmd(&data, cmd_args[0]);
-	if (!cmd)
-		pipex_exit(&data, 7, argv[2]);
-	execve(cmd, cmd_args, envp);
-	pipex_exit(&data, 9, NULL);
+	cmd_args = ft_split(cmd, ' ');
+	if (cmd_path(cmd_args[0]))
+		cmd_exe = ft_strdup(cmd_args[0]);
+	else
+		cmd_exe = get_cmd(&data, cmd_args[0]);
+	if (!cmd_exe)
+		return (ft_free_double_char(cmd_args), free(cmd_exe), pipex_exit(&data,
+				7, cmd));
+	if (execve(cmd_exe, cmd_args, envp) == -1)
+		return (ft_free_double_char(cmd_args), free(cmd_exe), pipex_exit(&data,
+				9, NULL));
 }
 
-void	second_child(t_pdata data, char **argv, char **envp)
+void	first_child(char *cmd, char **envp, t_pdata p, char *in_file)
 {
-	char	**cmd_args;
-	char	*cmd;
+	int	in_fd;
 
-	
-	if (dup2(data.tube[0], STDIN_FILENO) == -1)
-		//printf("hola");
-		pipex_exit(&data, 6, NULL);
-	close(data.tube[1]);
-	close(data.tube[0]);
-	if (dup2(data.out_fd, STDOUT_FILENO) == -1)
-		//printf("hola");
-		pipex_exit(&data, 6, NULL);
-	cmd_args = ft_split(argv[3], ' ');
-	if (!cmd_args)
-		(pipex_exit(&data, 4, NULL));
-	cmd = get_cmd(&data, cmd_args[0]);
-	if (cmd == NULL)
-		pipex_exit(&data, 7, argv[3]);
-	execve(cmd, cmd_args, envp);
-	pipex_exit(&data, 9, NULL);
+	p.pid1 = fork();
+	if (p.pid1 == 0)
+	{
+		in_fd = open(in_file, O_RDONLY);
+		if (in_fd < 0)
+		{
+			ft_putstr_fd("pipex: ", 2);
+			perror(in_file);
+			pipex_exit(&p, 0, NULL);
+		}
+		close(p.tube[0]);
+		if (dup2(p.tube[1], STDOUT_FILENO) == -1)
+			pipex_exit(&p, 6, NULL);
+		close(p.tube[1]);
+		if (dup2(in_fd, STDIN_FILENO) == -1)
+			pipex_exit(&p, 6, NULL);
+		close(in_fd);
+		ft_exe(cmd, envp, p);
+	}
+	else if (p.pid1 == -1)
+		pipex_exit(&p, 2, NULL);
+}
+
+void	second_child(char *cmd, char **envp, t_pdata p, char *out_file)
+{
+	int	out_fd;
+
+	out_fd = open(out_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (out_fd < 0)
+		pipex_exit(&p, 3, out_file);
+	p.pid2 = fork();
+	if (p.pid2 == 0)
+	{
+		if (dup2(p.tube[0], STDIN_FILENO) == -1)
+			pipex_exit(&p, 6, NULL);
+		close(p.tube[1]);
+		close(p.tube[0]);
+		if (dup2(out_fd, STDOUT_FILENO) == -1)
+			pipex_exit(&p, 6, NULL);
+		close(out_fd);
+		ft_exe(cmd, envp, p);
+	}
+	else if (p.pid2 == -1)
+		pipex_exit(&p, 2, NULL);
 }

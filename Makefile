@@ -6,7 +6,7 @@
 #    By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/15 04:44:20 by esamad-j          #+#    #+#              #
-#    Updated: 2023/06/02 01:32:55 by esamad-j         ###   ########.fr        #
+#    Updated: 2023/06/24 16:27:41 by esamad-j         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME	= pipex
 
-SRCS	= ft_split.c lib_ft.c main.c exit.c childs.c
+SRCS	= ft_split.c lib_ft.c main.c exit.c childs.c path_error.c
 
 OBJS		= $(SRCS:%.c=%.o)
 
