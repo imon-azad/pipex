@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: esamad-j <esamad-j@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 05:34:02 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/06/26 01:57:28 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/06/26 12:01:39 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/* void	leaksssss(void)
-{
-	atexit(leaksssss);
-	system("leaks -q pipex");
-}  */
 int	main(int argc, char **argv, char **envp)
 {
 	t_pdata	p;

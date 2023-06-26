@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: esamad-j <esamad-j@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 04:52:37 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/06/26 01:55:27 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/06/26 12:12:11 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	ft_exe(char *cmd, char **envp, t_pdata data)
 	char	*cmd_exe;
 
 	cmd_args = ft_split(cmd, ' ');
+	if (!cmd_args)
+		pipex_exit(&data, 4, NULL);
 	if (cmd_path(cmd_args[0]))
 		cmd_exe = ft_strdup(cmd_args[0]);
 	else
@@ -66,7 +68,8 @@ void	first_child(char *cmd, char **envp, t_pdata p, char *in_file)
 		{
 			ft_putstr_fd("pipex: ", 2);
 			perror(in_file);
-			pipex_exit(&p, 0, NULL);
+			ft_free_double_char(p.env_path);
+			exit(errno);
 		}
 		close(p.tube[0]);
 		if (dup2(p.tube[1], STDOUT_FILENO) == -1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: esamad-j <esamad-j@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:25:44 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/06/24 16:34:19 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:18:23 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	check_127(char **argv, t_pdata p)
 
 	cmd1 = argv[3];
 	splited = ft_split(cmd1, ' ');
+	if (!splited)
+		pipex_exit(&p, 4, NULL);
 	if (cmd_path(splited[0]))
 		cmd = ft_strdup(splited[0]);
 	else
