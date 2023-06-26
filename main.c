@@ -6,7 +6,7 @@
 /*   By: esamad-j <esamad-j@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 05:34:02 by esamad-j          #+#    #+#             */
-/*   Updated: 2023/06/24 16:35:35 by esamad-j         ###   ########.fr       */
+/*   Updated: 2023/06/26 01:57:28 by esamad-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	main(int argc, char **argv, char **envp)
 	get_env_path(envp, &p);
 	first_child(argv[2], envp, p, argv[1]);
 	second_child(argv[3], envp, p, argv[4]);
+	close(p.tube[0]);
+	close(p.tube[1]);
 	waitpid(p.pid1, &status1, 0);
 	waitpid(p.pid2, &status2, 0);
 	check_127(argv, p);
